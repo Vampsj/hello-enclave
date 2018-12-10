@@ -3,6 +3,7 @@
 #include "Enclave_u.h"
 #include "sgx_urts.h"
 #include "sgx_utils/sgx_utils.h"
+#include <chrono>
 
 /* Global EID shared by multiple threads */
 sgx_enclave_id_t global_eid = 0;
@@ -19,13 +20,16 @@ int main(int argc, char const *argv[]) {
     }
     int ptr;
 
+    auto start = std::chrono::high_resolution_clock::now();
     sgx_status_t status = generate_random_number(global_eid, &ptr);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elp = end-start;
     std::cout << status << std::endl;
     if (status != SGX_SUCCESS) {
         std::cout << "noob" << std::endl;
     }
     printf("Random number: %d\n", ptr);
-
+    printf("Generation time is %4.2f sec\n", elp.count());
     
     // Seal the random number
     size_t sealed_size = sizeof(sgx_sealed_data_t) + sizeof(ptr);
