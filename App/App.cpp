@@ -17,7 +17,7 @@ int main(int argc, char const *argv[]) {
         std::cout << "Fail to initialize enclave." << std::endl;
         return 1;
     }
-    int* ptr;
+    int ptr;
 
     sgx_status_t status = generate_random_number(global_eid, &ptr);
     std::cout << status << std::endl;
