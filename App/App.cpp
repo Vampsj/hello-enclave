@@ -17,7 +17,8 @@ int main(int argc, char const *argv[]) {
         std::cout << "Fail to initialize enclave." << std::endl;
         return 1;
     }
-    int ptr;
+    int* ptr;
+
     sgx_status_t status = generate_random_number(global_eid, &ptr);
     std::cout << status << std::endl;
     if (status != SGX_SUCCESS) {
@@ -25,6 +26,7 @@ int main(int argc, char const *argv[]) {
     }
     printf("Random number: %d\n", ptr);
 
+    
     // Seal the random number
     size_t sealed_size = sizeof(sgx_sealed_data_t) + sizeof(ptr);
     uint8_t* sealed_data = (uint8_t*)malloc(sealed_size);
@@ -48,6 +50,6 @@ int main(int argc, char const *argv[]) {
     }
 
     std::cout << "Seal round trip success! Receive back " << unsealed << std::endl;
-
+    
     return 0;
 }
